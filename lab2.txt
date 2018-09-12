@@ -1,0 +1,76 @@
+CREATE DATABASE lab2
+OWNER postgres;
+
+
+CREATE TABLE countries(
+  country_id  SERIAL CONSTRAINT countries_pkey PRIMARY KEY,
+  country_name VARCHAR(50) NOT NULL DEFAULT 'Kazakhstan',
+  region_id int,
+  population int
+);
+
+SELECT * FROM countries;
+
+INSERT INTO countries(country_id,country_name,region_id,population)
+  VALUES (DEFAULT,'Turkey',DEFAULT ,20000 );
+
+DROP TABLE countries;
+
+
+
+INSERT INTO countries (country_id,country_name) VALUES (DEFAULT ,'Prussia');
+
+
+INSERT INTO countries(country_id,country_name,region_id,population)
+  VALUES (DEFAULT ,'USA',NULL,'300000000');
+
+
+INSERT INTO countries VALUES (DEFAULT , 'Japan',995),
+                             (DEFAULT , 'UK',997),(DEFAULT ,'China',999);
+
+
+INSERT INTO countries (country_name)
+  VALUES (DEFAULT);
+
+
+INSERT INTO countries VALUES (DEFAULT ,DEFAULT ,DEFAULT ,DEFAULT );
+
+
+CREATE TABLE countries_new AS
+SELECT * FROM countries;
+
+CREATE TABLE countries_new (
+  LIKE countries INCLUDING CONSTRAINTS
+);
+
+
+
+SELECT * FROM countries_new;
+DROP TABLE countries_new;
+
+
+INSERT INTO countries_new
+SELECT * FROM countries;
+
+
+UPDATE countries
+SET region_id = '1'
+WHERE region_id is NULL
+RETURNING *;
+
+
+UPDATE countries
+SET population = population * 1.1
+RETURNING country_name, population AS "New population";
+
+
+DELETE FROM countries WHERE population < 100000
+RETURNING *;
+
+
+DELETE FROM countries_new
+RETURNING *;
+
+
+DELETE FROM countries
+RETURNING *;

@@ -1,0 +1,37 @@
+  CREATE DATABASE lab1
+OWNER postgres;
+
+
+
+  CREATE TABLE users(
+    id     SERIAL CONSTRAINT users_pkey PRIMARY KEY,
+    firstname   VARCHAR(50) NOT NULL,
+    lastname VARCHAR(50) NOT NULL
+  );
+
+SELECT * FROM users;
+
+DROP TABLE users;
+
+ALTER TABLE users ADD COLUMN isadmin INT;
+
+INSERT INTO users(firstname, lastname,isadmin)
+  VALUES ('Roman','Savoskin','0');
+
+
+
+ALTER TABLE users ALTER COLUMN isadmin DROP DEFAULT;
+ALTER TABLE users ALTER isadmin TYPE bool USING CASE WHEN isadmin = 0 THEN FALSE ELSE TRUE END;
+ALTER TABLE users ALTER COLUMN isadmin SET DEFAULT FALSE;
+
+CREATE TABLE tasks(
+  id SERIAL CONSTRAINT tasks_pkey PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  user_id INT
+);
+
+SELECT * FROM tasks;
+
+DROP TABLE tasks;
+
+DROP DATABASE lab1;

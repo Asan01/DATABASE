@@ -1,7 +1,7 @@
 CREATE DATABASE labbb6;
 
 CREATE TABLE Movie(
-  mID integer primary key,
+  mID integer primary key REFERENCES Rating(mID),
   title text,
   year int CHECK (year > 1900),
   director text,
@@ -20,9 +20,8 @@ create table Rating(
   rID int,
   mID int,
   stars int NOT NULL CHECK (stars BETWEEN 1 and 5),
-  ratingDate date  CHECK (ratingDate > '2000-12-31'::date),
+  ratingDate date CHECK (ratingDate > '2000-12-31'::date),
   UNIQUE (rID,mID,ratingDate)
-
 );
 
 update Movie set mID = mID + 1;
@@ -101,4 +100,19 @@ update Rating set rID = 209 where rID = 208;
 update Rating set mID = mID + 1;
 
 update Movie set mID = 109 where mID = 108;
+
+ALTER TABLE Reviewer DROP COLUMN rID CASCADE;
+
+ALTER TABLE Reviewer ADD FOREIGN KEY (rID)
+  REFERENCES Rating;
+
+ALTER TABLE Reviewer ALTER COLUMN rID SET NOT NULL;
+
+
+ALTER TABLE Rating ADD FOREIGN KEY (mID)
+  REFERENCES Movie;
+
+ALTER TABLE Movie DROP COLUMN mID CASCADE;
+
+SELECT * FROM Reviewer;
 
